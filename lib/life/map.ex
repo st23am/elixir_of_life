@@ -13,18 +13,18 @@ defmodule Life.Map do
   
   def cell_for_location(map, {x, y}) do
     Enum.at(map, x)
-    |>  Enum.at(y)
+    |> Enum.at(y)
   end
   
   def neighbors_for_cell(map, {x, y}) do
-    neighbors = [top_left      = {(x - 1), (y - 1)},
-                 top_center    = {(x - 1), (y    )},
-                 top_right     = {(x - 1), (y + 1)},
-                 right         = {(x    ), (y + 1)},
-                 bottom_right  = {(x + 1), (y + 1)},
-                 bottom_middle = {(x + 1), (y    )},
-                 bottom_left   = {(x + 1), (y - 1)},
-                 left          = {(x    ), (y - 1)}]
+    neighbors = [{(x - 1), (y - 1)}, #top_left
+                 {(x - 1), (y    )}, #top_center
+                 {(x - 1), (y + 1)}, #top_right
+                 {(x    ), (y + 1)}, #right
+                 {(x + 1), (y + 1)}, #bottom_right
+                 {(x + 1), (y    )}, #bottom_middle
+                 {(x + 1), (y - 1)}, #bottom_left
+                 {(x    ), (y - 1)}] #left
 
     Enum.map(neighbors, &({cell: cell_for_location(map, &1), location: &1}))
   end
