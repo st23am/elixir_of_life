@@ -17,21 +17,15 @@ defmodule Life.Map do
   end
   
   def neighbors_for_cell(map, {x, y}) do
-    top_left      = {(x - 1), (y - 1)}
-    top_center    = {(x - 1), (y    )}
-    top_right     = {(x - 1), (y + 1)}
-    right         = {(x    ), (y + 1)}
-    bottom_right  = {(x + 1), (y + 1)}
-    bottom_middle = {(x + 1), (y    )}
-    bottom_left   = {(x + 1), (y - 1)}
-    left          = {(x    ), (y - 1)}
-    Enum.map([top_left, 
-              top_center, 
-              top_right, 
-              right, 
-              bottom_right,
-              bottom_middle, 
-              bottom_left, 
-              left], &({cell: cell_for_location(map, &1), location: &1 }))
+    neighbors = [top_left      = {(x - 1), (y - 1)},
+                 top_center    = {(x - 1), (y    )},
+                 top_right     = {(x - 1), (y + 1)},
+                 right         = {(x    ), (y + 1)},
+                 bottom_right  = {(x + 1), (y + 1)},
+                 bottom_middle = {(x + 1), (y    )},
+                 bottom_left   = {(x + 1), (y - 1)},
+                 left          = {(x    ), (y - 1)}]
+
+    Enum.map(neighbors, &({cell: cell_for_location(map, &1), location: &1}))
   end
 end
