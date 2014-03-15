@@ -9,6 +9,12 @@ defmodule RuleTest do
                        ["N","N","D","N","N","N"],
                        ["N","N","N","N","N","N"]]
 
+    populated =      [["N","N","N","N","N","N"],
+                      ["N","L","N","N","L","N"],
+                      ["L","L","L","N","N","N"],
+                      ["N","N","D","N","N","N"],
+                      ["N","N","N","N","N","N"]]
+
     over_populated = [["N","N","N","N","N","N"],
                       ["N","L","N","N","L","N"],
                       ["L","L","L","N","N","N"],
@@ -21,33 +27,49 @@ defmodule RuleTest do
                     ["L","N","D","N","N","N"],
                     ["N","N","N","N","N","N"]]
 
+    cell = Life.Map.Cell.new(location: {2,1})
+
     {:ok, [under_populated: under_populated,
            over_populated: over_populated,
-           reproduction: reproduction] }
+           populated: populated,
+           reproduction: reproduction,
+           cell: cell]}
   end
 
-  test "under-population", context do
-    cell = Life.Map.Cell.new(location: {2,1})
-    expected_state = Life.Map.CellDiff.new(location: {2,1}, previous_state: "L", current_state: "L", next_state: "D")
-    assert(apply_under_population(context[:under_populated], cell) == expected_state)
-  end
-
-  # test "live", context do
-
-  # end
-
-   test "overcrowding", context do
-     cell = Life.Map.Cell.new(location: {2,1})
-     expected_state = Life.Map.CellDiff.new(location: {2,1}, previous_state: "L", current_state: "L", next_state: "D")
-     assert(apply_over_population(context[:over_populated], cell) == expected_state)
-   end
-
-   test "reproduction", context do
-     cell = Life.Map.Cell.new(location: {2,1}, state: "D")
-     expected_state = Life.Map.CellDiff.new(location: {2,1},
+  test "apply rules for under-populated cell", context do
+    under_populated = Life.Map.CellDiff.new(location: {2,1},
                                             previous_state: "L",
-                                            current_state: "D",
-                                            next_state: "L")
-     assert(apply_reproduction(context[:reproduction], cell) == expected_state)
-   end
+                                            current_state: "L",
+                                            next_state: "D")
+
+    assert(apply_rules(context[:under_populated], context[:cell]) == under_populated)
+  end
+
+  test "apply rules for overcrowded cell", context do
+    overcrowded = Life.Map.CellDiff.new(location: {2,1},
+                                        previous_state: "L",
+                                        current_state: "L",
+                                        next_state: "D")
+
+    assert(apply_rules(context[:under_populated], context[:cell]) == overcrowded)
+  end
+
+  test "apply rules for healthy cell", context do
+    populated = Life.Map.CellDiff.new(location: {2,1},
+                                      previous_state: "L",
+                                      current_state: "L",
+                                      next_state: "L")
+
+    assert(apply_rules(context[:populated], context[:cell]) == populated)
+  end
+
+  test "apply rules for cellular reproduction", context do
+    cell = Life.Map.Cell.new(location: {2,1}, state: "D")
+    reproduction = Life.Map.CellDiff.new(location: {2,1},
+                                         previous_state: "L",
+                                         current_state: "D",
+                                         next_state: "L")
+
+    assert(apply_rules(context[:reproduction], cell) == reproduction)
+  end
 end
