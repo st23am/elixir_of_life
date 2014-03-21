@@ -22,7 +22,6 @@ defmodule Life.Rule do
   end
 
   def apply_under_population(map, cell) do
-    neighbors = Life.Map.neighbors_for_cell(map, cell.location)
     Life.Map.CellDiff.new(location: cell.location,
                             previous_state: cell.previous_state,
                             current_state: cell.state,
@@ -30,7 +29,6 @@ defmodule Life.Rule do
   end
 
   def apply_over_population(map, cell) do
-    neighbors = Life.Map.neighbors_for_cell(map, cell.location)
     Life.Map.CellDiff.new(location: cell.location,
                             previous_state: cell.previous_state,
                             current_state: cell.state,
@@ -38,7 +36,6 @@ defmodule Life.Rule do
   end
 
   def apply_reproduction(map, cell) do
-    neighbors = Life.Map.neighbors_for_cell(map, cell.location)
     Life.Map.CellDiff.new(location: cell.location,
                           previous_state: cell.previous_state,
                           current_state: cell.state,
