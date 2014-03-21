@@ -27,10 +27,13 @@ defmodule Life.Map do
     Enum.with_index(row)
     |> Enum.map(&(tuple_to_list(&1)))
     |> Enum.map(fn ([cell | y]) ->
-                  x = Enum.at(row_num, 0)
-                  y = Enum.at(y, 0)
-                  Cell.new(state: cell, location: { x, y })
+                  if cell?(cell) do
+                    x = Enum.at(row_num, 0)
+                    y = Enum.at(y, 0)
+                    Cell.new(state: cell, location: { x, y })
+                  end
                end)
+    |> Enum.filter(&(&1 != nil))
     |> Enum.reverse
   end
 

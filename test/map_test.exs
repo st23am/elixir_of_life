@@ -34,14 +34,11 @@ defmodule MapTest do
 
   test "#cells", context do
     cells = [Life.Map.Cell[state: "L", location: {0, 0}, previous_state: "L"],
-             Life.Map.Cell[state: "N", location: {0, 1}, previous_state: "L"],
              Life.Map.Cell[state: "D", location: {0, 2}, previous_state: "L"],
              Life.Map.Cell[state: "L", location: {1, 0}, previous_state: "L"],
              Life.Map.Cell[state: "L", location: {1, 1}, previous_state: "L"],
              Life.Map.Cell[state: "L", location: {1, 2}, previous_state: "L"],
-             Life.Map.Cell[state: "N", location: {2, 0}, previous_state: "L"],
-             Life.Map.Cell[state: "D", location: {2, 1}, previous_state: "L"],
-             Life.Map.Cell[state: "N", location: {2, 2}, previous_state: "L"]]
+             Life.Map.Cell[state: "D", location: {2, 1}, previous_state: "L"]]
 
     assert(cells(context[:small_map]) == cells)
   end
