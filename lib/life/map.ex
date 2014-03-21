@@ -7,13 +7,37 @@ defmodule Life.Map do
     |> Enum.reject(&(&1 == ""))
     |> Enum.map(&(String.graphemes(&1)))
   end
-  
+
   def to_map_string(map) do
     Enum.map(map, &(Enum.join(&1)))
     |> Enum.map(&("#{&1}\n"))
     |> Enum.join
   end
-  
+
+  def cells(map) do
+    Enum.with_index(map)
+    |> Enum.map(&(tuple_to_list(&1)))
+    |> Enum.reduce([], fn(row, acc) ->
+                    Enum.concat(cells_for_row(row), acc)
+                  end)
+    |> Enum.reverse
+  end
+
+  def cells_for_row([row | row_num]) do
+    Enum.with_index(row)
+    |> Enum.map(&(tuple_to_list(&1)))
+    |> Enum.map(fn ([cell | y]) ->
+                  x = Enum.at(row_num, 0)
+                  y = Enum.at(y, 0)
+                  Cell.new(state: cell, location: { x, y })
+               end)
+    |> Enum.reverse
+  end
+
+  def cell?(string) do
+    string == "D" || string == "L"
+  end
+
   def cell_for_location(map, {x, y}) do
     Enum.at(map, x) |> Enum.at(y)
   end
