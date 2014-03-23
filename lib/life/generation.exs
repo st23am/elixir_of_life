@@ -4,10 +4,11 @@ defmodule Life.Generation do
     cells = Life.Map.cells(map)
     cell_diffs = Enum.map(cells, &(Life.Rule.apply_rules(map, &1)))
     next_map = Life.Map.evolve(cell_diffs, map)
-    IO.puts "Generation: #{gen} \n"
+    :timer.sleep 200
+    IO.write("\e[H\e[2J")
     string_map = Life.Map.to_map_string(next_map)
-    IO.puts string_map
-    :timer.sleep 1000
+    IO.write string_map
+    IO.write "Generation: #{gen} \n"
     run(next_map, gen)
   end
 end

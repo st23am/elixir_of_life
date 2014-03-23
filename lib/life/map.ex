@@ -1,6 +1,6 @@
 defmodule Life.Map do
 
-  defrecord Cell, state: "L", location: nil, previous_state: "L"
+  defrecord Cell, state: "o", location: nil, previous_state: "o"
   defrecord CellDiff, location: nil, previous_state: nil, current_state: nil, next_state: nil
   defrecord Generation, map: nil, cells: nil
 
@@ -52,7 +52,7 @@ defmodule Life.Map do
   end
 
   def cell?(string) do
-    string == "D" || string == "L"
+    string == "*" || string == "o"
   end
 
   def cell_for_location(map, {x, y}) do

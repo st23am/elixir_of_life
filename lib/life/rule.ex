@@ -11,14 +11,14 @@ defmodule Life.Rule do
       living_neighbors > 3 ->
         apply_over_population(cell)
 
-      living_neighbors == 3 and cell.state == "D" ->
+      living_neighbors == 3 and cell.state == "*" ->
         apply_reproduction(cell)
 
       living_neighbors >= 2 and living_neighbors <= 3 ->
         Life.Map.CellDiff.new(location: cell.location,
-                              previous_state: "L",
+                              previous_state: "o",
                               current_state: cell.state,
-                              next_state: "L")
+                              next_state: "o")
     end
   end
 
@@ -26,25 +26,25 @@ defmodule Life.Rule do
     Life.Map.CellDiff.new(location: cell.location,
                             previous_state: cell.previous_state,
                             current_state: cell.state,
-                            next_state: "D")
+                            next_state: "*")
   end
 
   def apply_over_population(cell) do
     Life.Map.CellDiff.new(location: cell.location,
                             previous_state: cell.previous_state,
                             current_state: cell.state,
-                            next_state: "D")
+                            next_state: "*")
   end
 
   def apply_reproduction(cell) do
     Life.Map.CellDiff.new(location: cell.location,
                           previous_state: cell.previous_state, 
                           current_state: cell.state,
-                          next_state: "L")
+                          next_state: "o")
   end
  
   def count_living_cells(cells) do
     Enum.map(cells, &(&1.state))
-    |> Enum.count(&(&1 == "L"))
+    |> Enum.count(&(&1 == "o"))
   end
 end

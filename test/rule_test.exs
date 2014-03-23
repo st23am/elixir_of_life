@@ -3,29 +3,29 @@ defmodule RuleTest do
   import Life.Rule
 
   setup do
-    under_populated = [["N","N","N","N","N","N"],
-                       ["N","N","N","N","L","N"],
-                       ["N","L","N","N","N","N"],
-                       ["N","N","D","N","N","N"],
-                       ["N","N","N","N","N","N"]]
+    under_populated = [[".",".",".",".",".","."],
+                       [".",".",".",".","o","."],
+                       [".","o",".",".",".","."],
+                       [".",".","*",".",".","."],
+                       [".",".",".",".",".","."]]
 
-    populated =      [["N","N","N","N","N","N"],
-                      ["N","L","N","N","L","N"],
-                      ["L","L","L","N","N","N"],
-                      ["N","N","D","N","N","N"],
-                      ["N","N","N","N","N","N"]]
+    populated =      [[".",".",".",".",".","."],
+                      [".","o",".",".","o","."],
+                      ["o","o","o",".",".","."],
+                      [".",".","*",".",".","."],
+                      [".",".",".",".",".","."]]
 
-    over_populated = [["N","N","N","N","N","N"],
-                      ["N","L","N","N","L","N"],
-                      ["L","L","L","N","N","N"],
-                      ["L","N","D","N","N","N"],
-                      ["N","N","N","N","N","N"]]
+    over_populated = [[".",".",".",".",".","."],
+                      [".","o",".",".","o","."],
+                      ["o","o","o",".",".","."],
+                      ["o",".","*",".",".","."],
+                      [".",".",".",".",".","."]]
 
-    reproduction = [["N","N","N","N","N","N"],
-                    ["N","L","N","N","L","N"],
-                    ["L","D","N","N","N","N"],
-                    ["L","N","D","N","N","N"],
-                    ["N","N","N","N","N","N"]]
+    reproduction = [[".",".",".",".",".","."],
+                    [".","o",".",".","o","."],
+                    ["o","*",".",".",".","."],
+                    ["o",".","*",".",".","."],
+                    [".",".",".",".",".","."]]
 
     cell = Life.Map.Cell.new(location: {2,1})
 
@@ -38,37 +38,37 @@ defmodule RuleTest do
 
   test "apply rules for under-populated cell", context do
     under_populated = Life.Map.CellDiff.new(location: {2,1},
-                                            previous_state: "L",
-                                            current_state: "L",
-                                            next_state: "D")
+                                            previous_state: "o",
+                                            current_state: "o",
+                                            next_state: "*")
 
     assert(apply_rules(context[:under_populated], context[:cell]) == under_populated)
   end
 
   test "apply rules for overcrowded cell", context do
     overcrowded = Life.Map.CellDiff.new(location: {2,1},
-                                        previous_state: "L",
-                                        current_state: "L",
-                                        next_state: "D")
+                                        previous_state: "o",
+                                        current_state: "o",
+                                        next_state: "*")
 
     assert(apply_rules(context[:under_populated], context[:cell]) == overcrowded)
   end
 
   test "apply rules for healthy cell", context do
     populated = Life.Map.CellDiff.new(location: {2,1},
-                                      previous_state: "L",
-                                      current_state: "L",
-                                      next_state: "L")
+                                      previous_state: "o",
+                                      current_state: "o",
+                                      next_state: "o")
 
     assert(apply_rules(context[:populated], context[:cell]) == populated)
   end
 
   test "apply rules for cellular reproduction", context do
-    cell = Life.Map.Cell.new(location: {2,1}, state: "D")
+    cell = Life.Map.Cell.new(location: {2,1}, state: "*")
     reproduction = Life.Map.CellDiff.new(location: {2,1},
-                                         previous_state: "L",
-                                         current_state: "D",
-                                         next_state: "L")
+                                         previous_state: "o",
+                                         current_state: "*",
+                                         next_state: "o")
 
     assert(apply_rules(context[:reproduction], cell) == reproduction)
   end
