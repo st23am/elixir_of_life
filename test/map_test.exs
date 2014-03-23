@@ -89,7 +89,7 @@ defmodule MapTest do
                  ]
     evolved_map = [["o", ".", "o"], ["o", "o", "o"], [".", "o", "."]]
 
-    assert(evolve(context[:small_map], cell_diffs) == evolved_map)
+    assert(evolve(cell_diffs, context[:small_map]) == evolved_map)
   end
 
   test "#cell_for_location", context do
