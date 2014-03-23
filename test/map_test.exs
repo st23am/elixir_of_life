@@ -12,6 +12,7 @@ defmodule MapTest do
     small_map = [["L","N","D"],
                  ["L","L","L"],
                  ["N","D","N"]]
+    
 
     map =  [["L","N","L","D","L","D"],
             ["L","N","L","N","L","D"],
@@ -31,7 +32,7 @@ defmodule MapTest do
   test "#to_string", context do
     assert(to_map_string(context[:map]) == context[:map_string])
   end
-
+  
   test "#cells", context do
     cells = [Life.Map.Cell[state: "L", location: {0, 0}, previous_state: "L"],
              Life.Map.Cell[state: "D", location: {0, 2}, previous_state: "L"],
@@ -42,15 +43,45 @@ defmodule MapTest do
 
     assert(cells(context[:small_map]) == cells)
   end
+  test "#evolve", context do
+    cell_diffs = [Life.Map.CellDiff[location: {0,0}, 
+                                    previous_state: "L",
+                                    current_state: "L",
+                                    next_state: "L"],
+                  Life.Map.CellDiff[location: {0,2}, 
+                                    previous_state: "L",
+                                    current_state: "D",
+                                    next_state: "L"],
+                  Life.Map.CellDiff[location: {1,0}, 
+                                    previous_state: "L",
+                                    current_state: "L",
+                                    next_state: "L"],
+                  Life.Map.CellDiff[location: {1,1}, 
+                                    previous_state: "L",
+                                    current_state: "L",
+                                    next_state: "L"],
+                  Life.Map.CellDiff[location: {1,2}, 
+                                    previous_state: "L",
+                                    current_state: "L",
+                                    next_state: "L"],
+                  Life.Map.CellDiff[location: {2,1},
+                                    previous_state: "L",
+                                    current_state: "D",
+                                    next_state: "L"], 
+                 ]
+    evolved_map = [["L", "N", "L"], ["L", "L", "L"], ["N", "L", "N"]]
 
-  test "#cell_for_location", context do
-    assert(cell_for_location(context[:map], {0,0}) == "L")
-    assert(cell_for_location(context[:map], {1,4}) == "L")
-    assert(cell_for_location(context[:map], {2,3}) == "D")
-    assert(cell_for_location(context[:map], {3,1}) == "L")
-    assert(cell_for_location(context[:map], {4,3}) == "L")
+    assert(evolve(context[:small_map], cell_diffs) == evolved_map)
   end
 
+  test "#cell_for_location", context do
+    assert(cell_for_location(context[:map], {0,0}) == Life.Map.Cell[state: "L", location: {0,0}])
+    assert(cell_for_location(context[:map], {1,4}) == Life.Map.Cell[state: "L", location: {1,4}])
+    assert(cell_for_location(context[:map], {2,3}) == Life.Map.Cell[state: "D", location: {2,3}])
+    assert(cell_for_location(context[:map], {3,1}) == Life.Map.Cell[state: "L", location: {3,1}])
+    assert(cell_for_location(context[:map], {4,3}) == Life.Map.Cell[state: "L", location: {4,3}])
+  end
+  
   test "#neighbors_for_cell", context do
     neighbors = [Life.Map.Cell[state: "N", location: {1, 1} ],
                  Life.Map.Cell[state: "L", location: {1, 2} ],
