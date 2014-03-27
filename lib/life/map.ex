@@ -17,15 +17,15 @@ defmodule Life.Map do
   end
 
   def evolve(cell_diffs, map) do
-    Enum.reduce(cell_diffs, map, fn (cell_diff, map) -> 
+    Enum.reduce(cell_diffs, map, fn (cell_diff, map) ->
                               apply_cell_diff(map, cell_diff)
-                         end) 
+                         end)
   end
 
   def apply_cell_diff(map, cell_diff) do
     {x, y} = cell_diff.location
     row = List.update_at(Enum.at(map, x), y, fn (row) -> cell_diff.next_state end)
-    List.update_at(map, x, fn (_) -> row end) 
+    List.update_at(map, x, fn (_) -> row end)
   end
 
   def cells(map) do
@@ -56,12 +56,12 @@ defmodule Life.Map do
   end
 
   def cell_for_location(map, {x, y}) do
-    x1 = Enum.at(map, x) 
-    if x1 != nil do
-     state = Enum.at(x1, y)
-     Cell.new(state: state, location: {x, y})
+    row = Enum.at(map, x)
+    if row != nil do
+      state = Enum.at(row, y)
+      Cell.new(state: state, location: {x, y})
     else
-     nil
+      nil
     end
   end
 
@@ -74,7 +74,7 @@ defmodule Life.Map do
                  {(x + 1), (y    )}, #bottom_middle
                  {(x + 1), (y - 1)}, #bottom_left
                  {(x    ), (y - 1)}] #left
-    
+
     Enum.map(neighbors, &(cell_for_location(map, &1)))
     |> Enum.filter(&(&1 != nil))
   end
